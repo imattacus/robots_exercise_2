@@ -22,16 +22,18 @@ def publish_particles():
 def move_particles(transform):
     # Given the control signal we sent to the motors, update the
     # positions of all particles according to their motion model
-    current_particles = [particle.estimate_update_position(transform)
-                         for particle in current_particles]
+    current_particles = np.fromiter((particle.estimate_update_position(transform)
+                                     for particle in current_particles),
+                                    current_particles.dtype)
     publish_particles()
 
 
 def resample_particles(laser_scan):
     # Given a laser scan, resample our particles according to their
     # estimate of the probability of that scan occurring
-    weights = [particle.probability_of_pose(laser_scan, world_map)
-               for particle in current_particles]
+    weights = np.fromiter((particle.probability_of_pose(laser_scan, world_map)
+                           for particle in current_particles),
+                          current_particles.dtype)
     current_particles = np.random.choice(current_particles,
                                          size=len(current_particles),
                                          p=weights/weights.sum())
@@ -41,7 +43,7 @@ def resample_particles(laser_scan):
 if __name__ == '__main__':
     rospy.init_node('stuart_localisation')
 
-    global current_particles = # TODO: initialise random particle distribution
+    global current_particles = # TODO: initialise random particle distribution (should be numpy array)
     global world_map = # TODO
 
     rospy.Subscriber('cmd_vel', Twist, move_particles)
