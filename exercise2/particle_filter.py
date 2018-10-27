@@ -8,7 +8,8 @@ import numpy as np
 from particle import Particle
 
 
-def publish_particles():    
+def publish_particles():
+    # Create and publish PoseArray for rviz
     pose_array = PoseArray()
     pose_array.header.frame_id = '1'
     pose_array.header.stamp = rospy.Time.now()
