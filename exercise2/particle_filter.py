@@ -36,7 +36,7 @@ def resample_particles(laser_scan):
                            for particle in current_particles),
                           current_particles.dtype)
     current_particles = np.random.choice(current_particles,
-                                         size=len(current_particles),
+                                         size=current_particles.size,
                                          p=weights/weights.sum())
     publish_particles()
 
