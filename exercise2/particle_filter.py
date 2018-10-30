@@ -75,7 +75,7 @@ if __name__ == '__main__':
     particle_count = 5
     particles = None
     iteration = 0
-    world_map = Map(None)
+    world_map = Map("../stage/map.png")
 
     fresh_particles()
 
