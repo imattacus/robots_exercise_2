@@ -8,6 +8,5 @@ class Map:
         self.width = self.map.shape[0]
         self.height = self.map.shape[1]
 
-
-def valid_pos(self, x, y):
-    return True
+    def valid_pos(self, x, y):
+        return True
