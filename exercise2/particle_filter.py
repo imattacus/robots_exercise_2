@@ -73,7 +73,7 @@ if __name__ == '__main__':
     global particle_count
 
     particle_count = 5
-    particles = np.array()
+    particles = None
     iteration = 0
     world_map = Map(None)
 
