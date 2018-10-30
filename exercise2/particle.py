@@ -36,7 +36,6 @@ class Particle(object):
         # TODO: calculate the probability that, given our current
         # pose estimate on world_map, we would get a laser scan that
         # looks like laser_scan
-        return 0.5
 
     def ros_pose(self):
         # Represent my position as ROS Pose Message class
