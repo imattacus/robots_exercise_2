@@ -9,6 +9,7 @@ from random import Random
 from particle import Particle
 from map import Map
 
+global particles
 
 def publish_particles():
     # Create and publish PoseArray for rviz
@@ -16,13 +17,14 @@ def publish_particles():
     pose_array.header.frame_id = 'map'
     pose_array.header.stamp = rospy.Time.now()
 
-    for particle in particles[iteration, :]:
+    for particle in particles:
         pose_array.poses.append(particle.ros_pose())
 
     particle_publisher.publish(pose_array)
 
 
 def move_particles(transform):
+    global particles
     # Given the control signal we sent to the motors, update the
     # positions of all particles according to their motion model
     new_particles = np.fromiter((particle.estimate_update_position(transform)
@@ -33,6 +35,8 @@ def move_particles(transform):
 
 
 def resample_particles(laser_scan):
+    global particles
+    global world_map
     # Given a laser scan, resample our particles according to their
     # estimate of the probability of that scan occurring
 
@@ -46,16 +50,17 @@ def resample_particles(laser_scan):
 
 
 def fresh_particles():
+    global particles
     particles = np.array([random_particle() for a in range(0, particle_count)])
 
 
 def random_particle():
     valid_pose = False
     while not valid_pose:
-        x = Random.randint(0, world_map.width)
-        y = Random.randint(0, world_map.height)
+        x = np.random.randint(0, world_map.width)
+        y = np.random.randint(0, world_map.height)
         valid_pose = world_map.valid_pos(x, y)
-    angle = Random.random() * 360  # TODO: Deg or Rad??
+    angle = np.random.random() * 360  # TODO: Deg or Rad??
     return Particle(x, y, angle)
 
 
