@@ -13,7 +13,7 @@ from map import Map
 def publish_particles():
     # Create and publish PoseArray for rviz
     pose_array = PoseArray()
-    pose_array.header.frame_id = '1'  # TODO: Should this be 'map'?
+    pose_array.header.frame_id = 'map'
     pose_array.header.stamp = rospy.Time.now()
 
     for particle in particles[iteration, :]:
@@ -25,29 +25,28 @@ def publish_particles():
 def move_particles(transform):
     # Given the control signal we sent to the motors, update the
     # positions of all particles according to their motion model
-    particles[iteration, :] = np.fromiter((particle.estimate_update_position(transform)
-                                           for particle in particles[iteration - 1, :]),
-                                          particles[iteration - 1, :].dtype)
+    new_particles = np.fromiter((particle.estimate_update_position(transform)
+                                 for particle in particles),
+                                particles.dtype)
+    particles = new_particles
     publish_particles()
 
 
 def resample_particles(laser_scan):
     # Given a laser scan, resample our particles according to their
     # estimate of the probability of that scan occurring
-    iteration += 1
 
     weights = np.fromiter((particle.probability_of_pose(laser_scan, world_map)
-                           for particle in particles[iteration, :]),
-                          particles[iteration, :].dtype)
-    particles[iteration, :] = np.random.choice(particles[iteration - 1, :],
-                                               size=particles[iteration - 1, :].size,
-                                               p=weights / weights.sum())
+                           for particle in particles),
+                          particles.dtype)
+    particles = np.random.choice(particles,
+                                 size=particles.size,
+                                 p=weights / weights.sum())
     publish_particles()
 
 
 def fresh_particles():
-    particles[iteration, :] = [random_particle() for a in range(0, particle_count)]
-    iteration += 1
+    particles = np.array([random_particle() for a in range(0, particle_count)])
 
 
 def random_particle():
