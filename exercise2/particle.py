@@ -33,6 +33,7 @@ class Particle(object):
         return Particle(x_updated, y_updated, rot_updated)
 
     def probability_of_pose(self, laser_scan, world_map):
+        return None
         # TODO: calculate the probability that, given our current
         # pose estimate on world_map, we would get a laser scan that
         # looks like laser_scan
