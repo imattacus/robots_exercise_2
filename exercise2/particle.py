@@ -1,34 +1,25 @@
-from geometry_msgs.msg import Pose, Point, Quaternion
+from geometry_msgs.msg import Pose, Point
 import numpy as np
 
 
 class Particle(object):
-    def __init__(self, x, y, rotation):
+    def __init__(self, x, y, rot):
         self.position = Point()
         self.position.x = x
         self.position.y = y
 
-        self.rotation = Quaternion()
-        self.rotation.x = rotation
+	self.rotation = rot
 
     def _noisy_update(self, current_value, increment, variance):
         return current_value + increment + np.random.normal(loc=0, scale=variance)
 
-    def estimate_update_position(self, transform):
-        # TODO: work out best values for variance
-        x_variance = 1
-        y_variance = 1
-        rot_variance = 1
+    def estimate_update_position(self, prev_tstamp, curr_tstamp, x_vel, y_vel, rot_vel):
 
-        x_updated = self._noisy_update(current_value=self.position.x,
-                                       increment=transform.linear.x,
-                                       variance=x_variance)
-        y_updated = self._noisy_update(current_value=self.position.y,
-                                       increment=transform.linear.y,
-                                       variance=y_variance)
-        rot_updated = self._noisy_update(current_value=self.rotatation.x,
-                                         increment=transform.angular.z,
-                                         variance=rot_variance)
+	# TODO calculate the new position (in the *_updated variables) based on the supplied timestamps and velocities, given the particles current position (self.position.x, self.position.y, self.rotation)
+
+        x_updated = #TODO
+        y_updated = #TODO
+        rot_updated = #TODO
 
         return Particle(x_updated, y_updated, rot_updated)
 
