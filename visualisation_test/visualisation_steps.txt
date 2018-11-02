@@ -1,0 +1,7 @@
+roscore
+
+rosrun stage_ros stageros pioneer_socs.world 
+
+rosrun map_server map_server map.yaml
+
+rosrun tf static_transform_publisher 0.0 0.0 0.0 0.0 0.0 0.0 map my_frame 100
