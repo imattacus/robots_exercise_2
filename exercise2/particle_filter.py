@@ -27,19 +27,19 @@ def publish_particles():
 
 def move_particles(msg):
     global particles
-	global prev_tstamp
+    global prev_tstamp
 	
-	curr_tstamp = msg.header.stamp
-	x_vel = msg.twist.twist.linear.x
-	y_vel = msg.twist.twist.linear.y
-	rot_vel = msg.twist.twist.angular.z
+    curr_tstamp = msg.header.stamp
+    x_vel = msg.twist.twist.linear.x
+    y_vel = msg.twist.twist.linear.y
+    rot_vel = msg.twist.twist.angular.z
 
     # Given the control signal we sent to the motors, update the
     # positions of all particles according to their motion model
     new_particles = np.fromiter((particle.estimate_update_position(prev_tstamp, curr_tstamp, x_vel, y_vel, rot_vel) for particle in particles), particles.dtype)
 
     particles = new_particles
-	prev_tstamp = curr_tstamp
+    prev_tstamp = curr_tstamp
     publish_particles()
 
 
