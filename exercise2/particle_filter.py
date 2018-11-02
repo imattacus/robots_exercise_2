@@ -86,7 +86,7 @@ if __name__ == '__main__':
     particles = None
     iteration = 0
     world_map = Map("~/catkin_ws/src/robots_exercise_2/stage/map.png")
-	prev_tstamp = rospy.Time.now()
+    prev_tstamp = rospy.Time.now()
 
     fresh_particles()
 
